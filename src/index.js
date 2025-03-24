@@ -1,26 +1,45 @@
 // Your code here
-let baseURL = "https://flatter-katei-ch3v.vercel.app/characters"
-fetch(baseURL)
-.then (response => response.json())
-.then(data => displayName(data))
 
-function showMe (){
-    let show = document.querySelector("#name")
-    show.innerHTML = `<p id="name">Character's Name</p>`
-}
+document.addEventListener("DOMContentLoaded", function () {
+    const baseURL = "https://flatter-katei-ch3v.vercel.app/characters";
+    const characterBar = document.getElementById("character-bar");
+    const voteForm = document.getElementById("votes-form");
+    const resetBtn = document.getElementById("reset-btn");
+    let selectedCharacter = null;
 
-function displayName() {
-    let top = document.querySelector("#text1")
-    top.addEventListener("click", showName)
-}
+    fetch(baseURL)
+        .then(res => res.json())
+        .then(characters => {
+            characters.forEach(char => {
+                let span = document.createElement("span");
+                span.innerText = char.name;
+                characterBar.appendChild(span);
 
-function displayImage (){
-    let img = document.querySelector("img")
-    img.scr = 'https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExeHRsb215MTZlNjhkaG1odXh4cDJjaWx2dW5peG1lZzg4eTc4a2ttciZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o8doVAxrMjXbIHaU0/giphy.gif'
-}
-displayImage()
+                span.addEventListener("click", function () {
+                    selectedCharacter = char;
+                    document.getElementById("name").innerText = char.name;
+                    document.getElementById("image").src = char.image;
+                    document.getElementById("vote-count").innerText = char.votes;
+                });
+            });
+        });
 
-function Results  (){
-    const num = document.getElementById(vote-count)
-    num.innerHTML = `<h4>Total Votes: <span id="vote-count">Character's Votes</span></h4>`
-}
+    voteForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        if (!selectedCharacter) return;
+
+        let voteInput = document.getElementById("votes");
+        let votes = parseInt(voteInput.value) || 0;
+        selectedCharacter.votes += votes;
+
+        document.getElementById("vote-count").innerText = selectedCharacter.votes;
+        voteInput.value = "";
+    });
+
+    resetBtn.addEventListener("click", function () {
+        if (!selectedCharacter) return;
+
+        selectedCharacter.votes = 0;
+        document.getElementById("vote-count").innerText = 0;
+    });
+});
