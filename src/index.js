@@ -1,19 +1,5 @@
 // Your code here
-// document.addEventListener("DOMContentLoaded", () =>{
-//     const baseURL ="http://localhost:3000/characters";
-//     const characterBar = document.getElementById("character-bar");
-//     const detailedInfo = document.getElementById("detailed-info");
-//     const voteForm = document.getElementById("votes-form")
-//     const resetbtn = document.getElementById("reset.btn")
-//     let selectedCharacter = null;
-    
-//     fetch(baseURL)
-//     .then(response => response.json())
-//     .then(characters => {characters.forEach(character => {
-//         const span = document.createElement("span");
-//         span.textContent = character.name;
-//     })})
-// })
+
 let baseURL = "http://localhost:3000/characters"
 fetch(baseURL)
 .then (response => response.json())
